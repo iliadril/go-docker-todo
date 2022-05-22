@@ -2,6 +2,7 @@ package handlers
 
 import "gorm.io/gorm"
 
+// create new handler struct to hold the DB
 type handler struct {
 	DB *gorm.DB
 }
