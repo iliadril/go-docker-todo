@@ -34,9 +34,10 @@ func (h handler) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	if result := h.DB.First(&todo, id); result.Error != nil {
 		fmt.Println(result.Error)
 	}
+	todo.Expiry = updatedTodo.Expiry
 	todo.Title = updatedTodo.Title
-	todo.Author = updatedTodo.Author
-	todo.Desc = updatedTodo.Desc
+	todo.Describtion = updatedTodo.Describtion
+	todo.Completeness = updatedTodo.Completeness
 
 	h.DB.Save(&todo)
 

@@ -1,0 +1,40 @@
+# docker-compose.yaml
+
+version: "3.9"
+
+services:
+    api-app:
+        container_name: api-app
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: prod
+        ports:
+            - "8080:8080"
+        depends_on:
+            - db
+        links:
+            - db
+
+    db:
+        container_name: api-db
+        image: postgres:14.3-alpine3.15
+        restart: always
+        environment:
+            - POSTGRES_USER=pg
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=todos
+        ports:
+            - "5432:5432"
+        volumes:
+            - database:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U pg -d todos"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+
+volumes:
+    database:
+

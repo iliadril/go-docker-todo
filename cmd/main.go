@@ -16,6 +16,10 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/todos", h.GetAllTodos).Methods(http.MethodGet)
+	r.HandleFunc("/books/{id}", h.GetTodo).Methods(http.MethodGet)
+	r.HandleFunc("/books", h.AddTodo).Methods(http.MethodPost)
+	r.HandleFunc("/books/{id}", h.UpdateTodo).Methods(http.MethodPut)
+	r.HandleFunc("/books/{id}", h.DeleteTodo).Methods(http.MethodDelete)
 
 	log.Println("Starting server :8080")
 	srv := &http.Server{

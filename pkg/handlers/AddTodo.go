@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -8,7 +9,7 @@ import (
 	"github.com/iliadril/go-docker-todo/pkg/models"
 )
 
-func (h handler) AddBook(w http.ResponseWriter, r *http.Request) {
+func (h handler) AddTodo(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	body, err := ioutil.ReadAll(r.Body)
@@ -16,14 +17,14 @@ func (h handler) AddBook(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
-	var book models.Todo
-	json.Unmarshall(body, &todo)
+	var todo models.Todo
+	json.Unmarshal(body, &todo)
 
 	if result := h.DB.Create(&todo); result.Error != nil {
 		log.Println(result.Error)
 	}
 
-	w.WtireHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusCreated)
 	w.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(w).Encode("Created")
 }
